@@ -30,7 +30,7 @@ The Twilio sample dataset illustrates the pattern the system is built to catch: 
 - "Generate a negotiation brief for the upcoming Twilio renewal."
 - Live drift alerts filtered by severity across all vendors.
 
-**Hindsight Memory Layer (`memory.py`)** — All facts are stored in [Hindsight](https://hindsight.so), a key-value memory service designed for LLM applications. One record per vendor baseline (`{vendor_id}:baseline`), one record per event (`{vendor_id}:events`). The storage and reasoning layers are deliberately separate: Hindsight holds facts, Groq interprets them.
+**Hindsight Memory Layer (`memory.py`)** — All facts are stored in [Hindsight](https://ui.hindsight.vectorize.io/), a key-value memory service designed for LLM applications. One record per vendor baseline (`{vendor_id}:baseline`), one record per event (`{vendor_id}:events`). The storage and reasoning layers are deliberately separate: Hindsight holds facts, Groq interprets them.
 
 **FastAPI Server (`server.py`)** — Unified REST API with two web UIs: a Pipeline UI for document ingestion and an Agent UI for querying, drift alerts, and negotiation briefs.
 
@@ -113,12 +113,12 @@ docs/
 
 - Python 3.10+
 - A [Groq](https://console.groq.com) API key
-- A [Hindsight](https://hindsight.so) API key and bank ID
+- A [Hindsight](https://ui.hindsight.vectorize.io/) API key and bank ID
 
 ### 1. Clone and create a virtual environment
 
 ```bash
-git clone https://github.com/your-org/vim.git
+git clone https://github.com/mohesh-coder/VIM.git
 cd vim
 
 python -m venv .venv
@@ -185,7 +185,7 @@ Open `http://localhost:8000` for the Agent UI and `http://localhost:8000/pipelin
 
 ## Hindsight Integration
 
-VIM uses [Hindsight](https://hindsight.so) via `hindsight-client` as its memory layer. Hindsight is a key-value store designed for persistent LLM memory — it provides `store()` (write/overwrite) and `append()` (add to a list) operations.
+VIM uses [Hindsight](https://ui.hindsight.vectorize.io/) via `hindsight-client` as its memory layer. Hindsight is a key-value store designed for persistent LLM memory — it provides `store()` (write/overwrite) and `append()` (add to a list) operations.
 
 `memory.py` wraps Hindsight with four functions:
 
@@ -249,7 +249,7 @@ GET  /api/debug/vendor/{vendor_id}       → full raw data as the agent sees it
 | `GROQ_API_KEY` | Yes | Groq API key — used for all LLM calls |
 | `HINDSIGHT_API_KEY` | Yes | Hindsight API key — memory read/write |
 | `HINDSIGHT_URL` | No | Hindsight base URL (defaults to `https://api.hindsight.so`) |
-| `BANK_NAME` | No | Hindsight bank/namespace (defaults to `vendorpulse`) |
+| `BANK_NAME` | No | Hindsight bank/namespace (defaults to `VIM`) |
 
 ---
 
