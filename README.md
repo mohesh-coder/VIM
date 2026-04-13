@@ -1,6 +1,6 @@
 # VIM — Vendor Intelligence Management
 
-![VIM Banner]([https://via.placeholder.com/1200x300?text=VendorPulse+%7C+Vendor+Intelligence+Platform](https://github.com/mohesh-coder/VIM/blob/c06819898c3222b791bd74f788a47cb82207f90b/asset/banner.png))
+![VIM Banner](https://github.com/mohesh-coder/VIM/blob/c06819898c3222b791bd74f788a47cb82207f90b/asset/banner.png)
 
 > **Procurement intelligence that treats every vendor document as structured memory.**
 
