@@ -1,0 +1,158 @@
+EMAIL THREAD — INCIDENT REPORT
+Twilio SMS Outage — June 14, 2023
+
+Document Type  : INCIDENT
+Vendor         : Twilio Inc.
+Vendor ID      : twilio
+Incident Date  : 2023-06-14
+Duration       : 4 hours 12 minutes (09:43 IST — 13:55 IST)
+Source File    : incident_jun2023.txt
+
+===================================================================
+
+--- Email 1 ---
+From     : Twilio Status Notifications <status@twilio.com>
+To       : alerts@acmetech.in
+Date     : June 14, 2023 — 10:15 IST
+Subject  : [Twilio Status] Investigating — SMS API degraded performance
+
+We are currently investigating reports of degraded performance
+affecting the SMS Messaging API. Customers may be experiencing
+delays in message delivery or increased error rates.
+
+Affected regions : Asia-Pacific (APAC)
+Incident started : June 14, 2023 09:43 UTC+5:30
+Current status   : Investigating
+
+We will provide an update within 60 minutes.
+
+— Twilio Reliability Engineering
+
+===================================================================
+
+--- Email 2 ---
+From     : Arjun Menon <arjun.menon@acmetech.in>
+To       : engineering@acmetech.in; ravi.shankar@acmetech.in
+Date     : June 14, 2023 — 10:22 IST
+Subject  : RE: URGENT — SMS delivery completely down
+
+Team,
+
+Twilio is down. Our OTP delivery success rate has dropped from
+99.2% to 0%. We are getting HTTP 503 errors on every API call.
+This is a full outage for our SMS channel.
+
+Customer impact: Any user trying to log in right now cannot
+receive their OTP. We are blocking logins for approximately
+12,000 active users per hour.
+
+I have opened a P1 ticket with Twilio (Ticket #TW-P1-20230614-0041).
+Jordan Mills has been notified.
+
+We need to activate backup SMS provider (MSG91) immediately.
+Ravi — this will cost us the minimum commitment overage.
+
+— Arjun
+
+===================================================================
+
+--- Email 3 ---
+From     : Twilio Support <support@twilio.com>
+To       : alerts@acmetech.in
+Date     : June 14, 2023 — 11:30 IST
+Subject  : RE: [Ticket #TW-P1-20230614-0041] Twilio SMS outage
+
+Hi Acme Technologies team,
+
+We have identified the root cause of the incident. A configuration
+change deployed at 09:40 IST caused routing failures in the
+APAC SMS delivery cluster. We are rolling back the change.
+
+Estimated resolution: 13:30 IST.
+
+We sincerely apologise for the disruption to your service.
+
+— Twilio Support Engineering
+
+===================================================================
+
+--- Email 4 ---
+From     : Twilio Status Notifications <status@twilio.com>
+To       : alerts@acmetech.in
+Date     : June 14, 2023 — 13:55 IST
+Subject  : [Twilio Status] Resolved — SMS API restored
+
+The SMS API degradation affecting APAC customers has been resolved.
+
+Incident duration : June 14, 2023 09:43 IST to 13:55 IST
+Total downtime    : 4 hours 12 minutes
+Root cause        : Faulty configuration push to APAC routing cluster
+Resolution        : Configuration rollback completed
+
+A post-incident report will be published within 5 business days.
+
+— Twilio Reliability Engineering
+
+===================================================================
+
+--- Email 5 ---
+From     : Ravi Shankar <ravi.shankar@acmetech.in>
+To       : jordan.mills@twilio.com
+Date     : June 16, 2023 — 09:10 IST
+Subject  : SLA credit claim — Outage June 14, 2023
+
+Hi Jordan,
+
+Following up on the 4-hour SMS outage on June 14. As per our
+contract (Section 3.1), Twilio guarantees 99.95% monthly uptime.
+
+The 4 hours 12 minutes of downtime on June 14 brings our June
+uptime to approximately 99.42%, which falls in the 10% credit
+tier under Section 3.2 of our MSA.
+
+Please process a credit of 10% of our June invoice against our
+July billing. Our June invoice (TWL-INV-2023-0648) is $11,820.
+
+Expected credit: $1,182.00 applied to July invoice.
+
+Please confirm receipt and processing timeline.
+
+Best,
+Ravi Shankar
+CFO, Acme Technologies
+
+===================================================================
+
+--- Email 6 ---
+From     : Jordan Mills <jordan.mills@twilio.com>
+To       : ravi.shankar@acmetech.in
+Date     : June 19, 2023 — 14:22 IST
+Subject  : RE: SLA credit claim — Outage June 14, 2023
+
+Hi Ravi,
+
+Thank you for reaching out. I have escalated your credit request
+to our billing and accounts team. They will review the incident
+data and revert within 10 business days.
+
+We appreciate your patience.
+
+Best,
+Jordan Mills
+Account Executive, APAC — Twilio
+
+===================================================================
+
+NOTE: As of the date of this document, no SLA credit has been
+applied to the Acme Technologies account. The July 2023 invoice
+(TWL-INV-2023-0791) did not include any credit for the June 14
+outage. No further communication from Twilio was received on
+this matter.
+
+===================================================================
+END OF DOCUMENT
+Vendor ID      : twilio
+Document Type  : incident
+Document Date  : 2023-06-14
+Source File    : incident_jun2023.txt
+===================================================================

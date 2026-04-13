@@ -1,0 +1,129 @@
+MASTER SERVICES AGREEMENT — RENEWAL
+Twilio Inc. — Contract Renewal Document
+
+Document Type  : RENEWAL
+Vendor         : Twilio Inc.
+Vendor ID      : twilio
+Date           : 2024-02-10
+Renewal Period : June 1, 2024 through June 1, 2026
+Rep Name       : Jordan Mills (jordan.mills@twilio.com)
+
+-------------------------------------------------------------------
+PARTIES
+-------------------------------------------------------------------
+This Renewal Agreement ("Renewal") is entered into as of
+February 10, 2024 ("Renewal Date") between:
+
+  Twilio Inc., a Delaware corporation ("Twilio")
+  375 Beale Street, Suite 300, San Francisco, CA 94105
+
+and
+
+  Acme Technologies Pvt. Ltd. ("Customer")
+  12 Rajiv Gandhi Salai, Chennai, Tamil Nadu 600096
+
+This Renewal supersedes and replaces the Master Services Agreement
+dated March 1, 2022 in its entirety.
+
+-------------------------------------------------------------------
+SECTION 1 — SERVICES
+-------------------------------------------------------------------
+Twilio agrees to continue providing the following services:
+
+  1.1  SMS Messaging API — Programmatic outbound and inbound SMS.
+  1.2  Voice API — Programmable voice and conferencing.
+  1.3  WhatsApp Business API — Notifications and two-way messaging.
+  1.4  Twilio Verify — OTP and phone number verification service
+       (new addition to service bundle).
+
+-------------------------------------------------------------------
+SECTION 2 — PRICING
+-------------------------------------------------------------------
+  2.1  SMS Rate
+       USD $0.0081 per outbound SMS (domestic India).
+
+  2.2  Voice Rate
+       USD $0.014 per minute (outbound), USD $0.009 per minute
+       (inbound).
+
+  2.3  WhatsApp Rate
+       USD $0.005 per conversation (24-hour session window).
+
+  2.4  Twilio Verify Rate
+       USD $0.05 per successful verification.
+
+  2.5  Volume Commitment
+       Customer commits to a minimum monthly spend of USD $3,000.
+
+  2.6  Payment Terms
+       Net-30 from invoice date.
+
+-------------------------------------------------------------------
+SECTION 3 — SERVICE LEVELS
+-------------------------------------------------------------------
+  3.1  Service Availability
+       Twilio will use commercially reasonable efforts to maintain
+       availability of the SMS Messaging API and other services
+       covered under this Agreement.
+
+  3.2  Support Response Times
+       Severity P1 (full outage)  : 2-hour response
+       Severity P2 (degraded)     : 8-hour response
+       Severity P3 (minor)        : Next business day response
+
+  3.3  Scheduled Maintenance
+       Twilio may perform scheduled maintenance during low-traffic
+       windows with 48 hours advance notice to Customer.
+
+  3.4  Incident Communication
+       Twilio will make reasonable efforts to notify Customer of
+       significant service incidents via the Twilio Status Page
+       at status.twilio.com.
+
+-------------------------------------------------------------------
+SECTION 4 — TERM AND RENEWAL
+-------------------------------------------------------------------
+  4.1  Renewal Term
+       This Agreement is effective from June 1, 2024 and continues
+       through June 1, 2026 ("Renewal Term").
+
+  4.2  Auto-Renewal
+       This Agreement will auto-renew for successive 12-month
+       periods unless either party provides 60 days written notice
+       of non-renewal.
+
+-------------------------------------------------------------------
+SECTION 5 — GENERAL TERMS
+-------------------------------------------------------------------
+  5.1  Governing Law
+       This Agreement is governed by the laws of the State of
+       California, USA.
+
+  5.2  Limitation of Liability
+       In no event shall Twilio's liability exceed the fees paid
+       by Customer in the three months preceding the claim.
+
+  5.3  Entire Agreement
+       This Renewal constitutes the entire agreement between the
+       parties and supersedes all prior agreements.
+
+-------------------------------------------------------------------
+SECTION 6 — SIGNATURES
+-------------------------------------------------------------------
+  Twilio Inc.
+  Signed  : Jordan Mills
+  Title   : Account Executive, Asia-Pacific
+  Date    : February 10, 2024
+
+  Acme Technologies Pvt. Ltd.
+  Signed  : [PENDING CUSTOMER SIGNATURE]
+  Title   : Chief Financial Officer
+  Date    :
+
+-------------------------------------------------------------------
+END OF DOCUMENT
+Vendor ID      : twilio
+Document Type  : renewal
+Document Date  : 2024-02-10
+Source File    : renewal_feb2024.txt
+-------------------------------------------------------------------

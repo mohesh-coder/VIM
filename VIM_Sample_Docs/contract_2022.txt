@@ -1,0 +1,134 @@
+MASTER SERVICES AGREEMENT
+Twilio Inc. — Customer Contract
+
+Document Type  : CONTRACT
+Vendor         : Twilio Inc.
+Vendor ID      : twilio
+Date           : 2022-03-01
+Rep Name       : Jordan Mills (jordan.mills@twilio.com)
+Renewal Date   : 2024-06-01
+
+-------------------------------------------------------------------
+PARTIES
+-------------------------------------------------------------------
+This Master Services Agreement ("Agreement") is entered into as of
+March 1, 2022 ("Effective Date") between:
+
+  Twilio Inc., a Delaware corporation ("Twilio")
+  375 Beale Street, Suite 300, San Francisco, CA 94105
+
+and
+
+  Acme Technologies Pvt. Ltd. ("Customer")
+  12 Rajiv Gandhi Salai, Chennai, Tamil Nadu 600096
+
+-------------------------------------------------------------------
+SECTION 1 — SERVICES
+-------------------------------------------------------------------
+Twilio agrees to provide the following communication services to
+Customer under the terms of this Agreement:
+
+  1.1  SMS Messaging API — Programmatic outbound and inbound SMS
+       delivery via Twilio's global carrier network.
+
+  1.2  Voice API — Programmable voice calls, IVR, and conferencing.
+
+  1.3  WhatsApp Business API — Customer notifications and two-way
+       messaging via the WhatsApp channel.
+
+-------------------------------------------------------------------
+SECTION 2 — PRICING
+-------------------------------------------------------------------
+  2.1  SMS Rate
+       Agreed price per outbound SMS (domestic India):
+       USD $0.0075 per SMS
+
+       This rate is locked for the full term of this Agreement
+       (March 1, 2022 through June 1, 2024) and shall not be
+       increased without a minimum of 60 days written notice to
+       Customer.
+
+  2.2  Voice Rate
+       USD $0.013 per minute (outbound), USD $0.0085 per minute
+       (inbound). Rates locked for contract term.
+
+  2.3  WhatsApp Rate
+       USD $0.005 per conversation (24-hour session window).
+
+  2.4  Volume Commitment
+       Customer commits to a minimum monthly spend of USD $2,000.
+       Spend below this threshold will be invoiced at the minimum
+       commitment amount.
+
+  2.5  Payment Terms
+       Net-30 from invoice date. Late payments accrue interest at
+       1.5% per month.
+
+-------------------------------------------------------------------
+SECTION 3 — SERVICE LEVEL AGREEMENT (SLA)
+-------------------------------------------------------------------
+  3.1  Uptime Guarantee
+       Twilio guarantees 99.95% monthly uptime for the SMS
+       Messaging API. Downtime is calculated as minutes of
+       total service unavailability per calendar month.
+
+  3.2  SLA Credit Schedule
+       If Twilio fails to meet the 99.95% uptime commitment,
+       Customer is entitled to service credits as follows:
+
+         Uptime 99.50% – 99.94%  →  10% credit of monthly invoice
+         Uptime 99.00% – 99.49%  →  25% credit of monthly invoice
+         Uptime below 99.00%     →  50% credit of monthly invoice
+
+       Credits must be claimed by Customer within 30 days of the
+       incident. Credits will be applied to the following invoice.
+
+  3.3  Support Response Times
+       Severity P1 (full outage)  : 1-hour response, 4-hour resolution
+       Severity P2 (degraded)     : 4-hour response, 24-hour resolution
+       Severity P3 (minor)        : Next business day response
+
+  3.4  Incident Notification
+       Twilio will notify Customer of any P1 or P2 incidents via
+       email within 30 minutes of detection. Post-incident reports
+       will be delivered within 5 business days.
+
+-------------------------------------------------------------------
+SECTION 4 — TERM AND RENEWAL
+-------------------------------------------------------------------
+  4.1  Initial Term
+       This Agreement is effective from March 1, 2022 and continues
+       through June 1, 2024 ("Initial Term").
+
+  4.2  Renewal
+       This Agreement will auto-renew for successive 12-month periods
+       unless either party provides 90 days written notice of
+       non-renewal prior to the end of the then-current term.
+
+  4.3  Price Lock on Renewal
+       Any pricing changes at renewal require 60 days advance written
+       notice. Customer retains the right to terminate without penalty
+       within 30 days of receiving notice of a price increase.
+
+-------------------------------------------------------------------
+SECTION 5 — SIGNATURES
+-------------------------------------------------------------------
+Agreed and accepted by:
+
+  Twilio Inc.
+  Signed  : Jordan Mills
+  Title   : Account Executive, Asia-Pacific
+  Date    : March 1, 2022
+
+  Acme Technologies Pvt. Ltd.
+  Signed  : Priya Ramesh
+  Title   : Chief Financial Officer
+  Date    : March 1, 2022
+
+-------------------------------------------------------------------
+END OF DOCUMENT
+Vendor ID      : twilio
+Document Type  : contract
+Document Date  : 2022-03-01
+Source File    : contract_2022.txt
+-------------------------------------------------------------------

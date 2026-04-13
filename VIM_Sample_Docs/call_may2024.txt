@@ -1,0 +1,151 @@
+CALL TRANSCRIPT
+Vendor Review Call — Twilio Account
+
+Document Type  : CALL TRANSCRIPT
+Vendor         : Twilio Inc.
+Vendor ID      : twilio
+Call Date      : 2024-05-03
+Call Time      : 11:00 IST — 11:52 IST
+Duration       : 52 minutes
+Platform       : Google Meet
+
+Participants:
+  Twilio     — Jordan Mills, Account Executive APAC
+  Twilio     — Sarah Okafor, Customer Success Manager
+  Acme Tech  — Priya Ramesh, CFO
+  Acme Tech  — Ravi Shankar, Finance Manager
+  Acme Tech  — Arjun Menon, Engineering Lead
+
+Source File    : call_may2024.txt
+
+===================================================================
+TRANSCRIPT (summarised with key verbatim sections)
+===================================================================
+
+[00:00 — 00:04] — Introductions and agenda
+
+Jordan Mills: Good morning everyone, thanks for making the time.
+Today we want to walk through your account health, discuss the
+renewal coming up in June, and answer any questions you have on
+the new pricing in the renewal doc we sent in February.
+
+Priya Ramesh: Thanks Jordan. We have a few items to cover.
+Ravi and Arjun have both flagged concerns I want to raise directly.
+
+-------------------------------------------------------------------
+[00:04 — 00:18] — Pricing discussion
+
+Ravi Shankar: Jordan, the renewal doc shows $0.0081 per SMS.
+Our original contract in 2022 was $0.0075. That is an 8% increase.
+We were never formally notified about that change. When did that
+happen?
+
+Jordan Mills: That rate adjustment happened in late 2022 as part
+of a broader India carrier cost revision. I understand the
+communication could have been clearer. I apologise for that.
+
+Ravi Shankar: Clearer? We received no notice at all. Our contract
+says 60 days written notice is required before any rate change.
+That did not happen. We have been paying the higher rate for
+over a year without agreeing to it.
+
+Jordan Mills: I hear you, Ravi. I want to make this right.
+I cannot retroactively reverse 16 months of invoicing, but I can
+commit to holding the current rate of $0.0081 through the end of
+Q2 2024 — that is, through June 30 — while you evaluate the
+renewal terms.
+
+Priya Ramesh: I need that in writing, Jordan.
+
+Jordan Mills: Absolutely, I will follow up with a written
+confirmation by end of this week.
+
+-------------------------------------------------------------------
+[00:18 — 00:31] — SLA and outage discussion
+
+Arjun Menon: I want to raise the outage from June 2023.
+We were down for over four hours. We filed a formal credit claim
+on June 16, 2023. We never received the credit. Ravi followed up
+with you directly. No response after your initial acknowledgement.
+
+Jordan Mills: I am really sorry about that. Let me look into the
+credit status after this call. That should not have fallen through.
+
+Sarah Okafor: I will pick that up as an action item, Arjun.
+I will confirm the credit status and get back to you by end of
+next week.
+
+Arjun Menon: Also, the renewal document removes the 99.95% uptime
+guarantee entirely. Section 3.1 in the old contract had a specific
+uptime SLA with a credit schedule. The new document just says
+"commercially reasonable efforts". That is not acceptable to us.
+
+Jordan Mills: That is a standard clause update we have rolled out
+across our enterprise contracts. The intent is the same, but I
+understand the concern. I can flag internally whether we can
+reinstate specific uptime language for your account.
+
+Priya Ramesh: Please do. We cannot sign a renewal without a
+defined uptime commitment and a credit mechanism. That is a
+non-starter for us.
+
+-------------------------------------------------------------------
+[00:31 — 00:44] — Volume and growth discussion
+
+Jordan Mills: I also wanted to discuss your volume trajectory.
+You are running about 1.4 to 1.5 million SMS per month. We expect
+that to grow as your user base expands. We have a volume tier at
+2 million SMS per month that would bring your rate down to $0.0077.
+
+Arjun Menon: We expect to hit that threshold by Q3 2024. Is that
+rate guaranteed in the renewal doc?
+
+Jordan Mills: It is not explicitly in the current draft, but I can
+add a volume tier schedule as an addendum. Once you cross 2 million
+SMS in a calendar month, the rate automatically drops to $0.0077
+for that month.
+
+Priya Ramesh: That needs to be in writing in the agreement, not a
+verbal commitment.
+
+-------------------------------------------------------------------
+[00:44 — 00:52] — Closing and actions
+
+Jordan Mills: Let me summarise the actions I am taking away:
+One — written confirmation that the $0.0081 rate is locked
+      through end of Q2 2024 (June 30, 2024).
+Two — investigate and confirm status of the June 2023 SLA credit.
+Three — explore whether specific uptime SLA language can be
+        reinstated in the renewal contract.
+Four — send a volume tier addendum for 2M SMS threshold at $0.0077.
+
+Priya Ramesh: We will not be signing the February renewal document
+until all four of those items are resolved. We are happy to extend
+good faith through June but we need written commitments.
+
+Jordan Mills: Understood. I will have follow-up items to you by
+May 10, 2024.
+
+[Call ended 11:52 IST]
+
+===================================================================
+ACTION ITEMS (from call)
+===================================================================
+Owner          : Jordan Mills / Twilio
+Due            : May 10, 2024
+
+1. Send written confirmation: rate $0.0081 locked through Q2 2024
+2. Confirm status of June 2023 SLA credit ($1,182.00)
+3. Confirm whether 99.95% uptime SLA can be reinstated in renewal
+4. Send volume tier addendum (2M SMS / month → $0.0077 rate)
+
+NOTE: As of the date of this document (May 3, 2024), none of
+the above written commitments have been received from Twilio.
+
+===================================================================
+END OF DOCUMENT
+Vendor ID      : twilio
+Document Type  : call_transcript
+Document Date  : 2024-05-03
+Source File    : call_may2024.txt
+===================================================================

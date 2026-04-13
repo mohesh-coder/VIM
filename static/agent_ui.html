@@ -1,0 +1,951 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="dark">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>VendorPulse</title>
+<link rel="preconnect" href="https://fonts.googleapis.com"/>
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500;0,9..40,600;1,9..40,300&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet"/>
+<script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
+<style>
+/* ═══════════════════════════════ TOKENS ════════════════════════════════ */
+:root {
+  --font-sans: 'DM Sans', sans-serif;
+  --font-mono: 'DM Mono', monospace;
+  --accent:        #2DD4BF;
+  --accent-dim:    #1a9e8f;
+  --accent-glow:   rgba(45,212,191,0.12);
+  --accent-subtle: rgba(45,212,191,0.07);
+  --sev3: #F87171; --sev3-bg: rgba(248,113,113,0.08);
+  --sev2: #FBBF24; --sev2-bg: rgba(251,191,36,0.08);
+  --sev1: #6EE7B7; --sev1-bg: rgba(110,231,183,0.07);
+  --radius-sm:4px; --radius-md:12px; --radius-lg:18px;
+  --transition:.18s ease;
+}
+[data-theme="dark"] {
+  --bg-base:#0D0F12; --bg-surface:#13161B; --bg-elevated:#1A1E25; --bg-hover:#20252E;
+  --border:rgba(255,255,255,0.07); --border-mid:rgba(255,255,255,0.12);
+  --text-primary:#E8EAF0; --text-secondary:#8B8FA8; --text-muted:#555A6E;
+  --shadow:0 4px 24px rgba(0,0,0,.4); --shadow-lg:0 8px 40px rgba(0,0,0,.6);
+}
+[data-theme="light"] {
+  --bg-base:#F4F6FA; --bg-surface:#FFFFFF; --bg-elevated:#EEF1F7; --bg-hover:#E8EBF3;
+  --border:rgba(0,0,0,0.07); --border-mid:rgba(0,0,0,0.12);
+  --text-primary:#1A1D2E; --text-secondary:#5A5F7A; --text-muted:#9A9FB8;
+  --shadow:0 4px 24px rgba(0,0,0,.08); --shadow-lg:0 8px 40px rgba(0,0,0,.12);
+  --accent-glow:rgba(45,212,191,0.08); --accent-subtle:rgba(45,212,191,0.05);
+}
+
+/* ═══════════════════════════════ RESET ═════════════════════════════════ */
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}
+html,body{height:100%;font-family:var(--font-sans);font-size:15px;background:var(--bg-base);color:var(--text-primary);line-height:1.6;-webkit-font-smoothing:antialiased;transition:background var(--transition),color var(--transition);}
+
+/* ═══════════════════════════════ LAYOUT ════════════════════════════════ */
+.app{display:grid;grid-template-columns:240px 1fr;height:100vh;overflow:hidden;}
+
+/* ═══════════════════════════════ SIDEBAR ═══════════════════════════════ */
+.sidebar{background:var(--bg-surface);border-right:1px solid var(--border);display:flex;flex-direction:column;}
+.sidebar-header{padding:24px 20px 20px;border-bottom:1px solid var(--border);}
+.logo{display:flex;align-items:center;gap:10px;margin-bottom:4px;}
+.logo-icon{width:32px;height:32px;background:var(--accent-glow);border:1px solid var(--accent-dim);border-radius:8px;display:flex;align-items:center;justify-content:center;font-size:15px;}
+.logo-name{font-size:16px;font-weight:600;color:var(--text-primary);letter-spacing:-.3px;}
+.logo-tagline{font-size:11px;color:var(--text-muted);letter-spacing:.02em;padding-left:42px;}
+.nav{padding:16px 12px;flex:1;display:flex;flex-direction:column;gap:2px;}
+.nav-label{font-size:10px;font-weight:600;letter-spacing:.08em;color:var(--text-muted);text-transform:uppercase;padding:0 8px;margin-bottom:6px;margin-top:8px;}
+.nav-item{display:flex;align-items:center;gap:10px;padding:9px 12px;border-radius:8px;cursor:pointer;font-size:13.5px;font-weight:400;color:var(--text-secondary);transition:all var(--transition);border:none;background:none;width:100%;text-align:left;position:relative;}
+.nav-item:hover{background:var(--bg-hover);color:var(--text-primary);}
+.nav-item.active{background:var(--accent-subtle);color:var(--accent);font-weight:500;}
+.nav-item.active::before{content:'';position:absolute;left:0;top:20%;height:60%;width:2.5px;background:var(--accent);border-radius:0 2px 2px 0;}
+.nav-icon{font-size:15px;}
+.badge{margin-left:auto;background:var(--sev3-bg);color:var(--sev3);font-size:10px;font-weight:600;padding:2px 7px;border-radius:20px;font-family:var(--font-mono);}
+.vendor-chip{margin:0 12px 12px;background:var(--bg-elevated);border:1px solid var(--border);border-radius:8px;padding:10px 12px;}
+.vendor-chip-label{font-size:10px;color:var(--text-muted);text-transform:uppercase;letter-spacing:.07em;font-weight:600;margin-bottom:3px;}
+.vendor-chip-name{font-size:13px;font-weight:500;color:var(--text-primary);}
+.vendor-chip-status{font-size:11px;color:var(--accent);margin-top:2px;}
+.theme-toggle{margin:0 12px 12px;display:flex;align-items:center;justify-content:space-between;padding:10px 12px;background:var(--bg-elevated);border:1px solid var(--border);border-radius:8px;cursor:pointer;transition:background var(--transition);}
+.theme-toggle:hover{background:var(--bg-hover);}
+.theme-toggle-label{font-size:12px;color:var(--text-secondary);display:flex;align-items:center;gap:7px;}
+.toggle-switch{width:34px;height:18px;background:var(--border-mid);border-radius:9px;position:relative;transition:background var(--transition);}
+.toggle-switch.on{background:var(--accent-dim);}
+.toggle-knob{width:14px;height:14px;background:white;border-radius:50%;position:absolute;top:2px;left:2px;transition:transform var(--transition);box-shadow:0 1px 3px rgba(0,0,0,.2);}
+.toggle-switch.on .toggle-knob{transform:translateX(16px);}
+
+/* ── Vendor List ── */
+.vendors-section{margin:0 12px 12px;display:flex;flex-direction:column;gap:0;background:var(--bg-elevated);border:1px solid var(--border);border-radius:8px;overflow:hidden;}
+.vendors-header{padding:10px 12px;border-bottom:1px solid var(--border);font-size:10px;color:var(--text-muted);text-transform:uppercase;letter-spacing:.07em;font-weight:600;}
+.vendors-list{display:flex;flex-direction:column;gap:0;max-height:180px;overflow-y:auto;}
+.vendor-item{padding:9px 12px;border-bottom:1px solid var(--border);cursor:pointer;transition:all var(--transition);font-size:12px;color:var(--text-secondary);background:var(--bg-elevated);}
+.vendor-item:last-child{border-bottom:none;}
+.vendor-item:hover{background:var(--bg-hover);color:var(--text-primary);}
+.vendor-item.active{background:var(--accent-subtle);color:var(--accent);font-weight:500;border-left:2.5px solid var(--accent);padding-left:9.5px;}
+.vendor-item-name{font-weight:500;}
+.vendor-item-status{font-size:10px;color:var(--text-muted);margin-top:1px;}
+
+/* ── Pipeline redirect button ── */
+.pipeline-redirect{margin:0 12px 12px;display:flex;align-items:center;gap:9px;padding:11px 14px;background:var(--accent-subtle);border:1px solid rgba(45,212,191,0.2);border-radius:8px;cursor:pointer;transition:all var(--transition);text-decoration:none;color:var(--accent);font-size:13px;font-weight:500;}
+.pipeline-redirect:hover{background:var(--accent-glow);border-color:var(--accent-dim);transform:translateX(2px);}
+.pipeline-redirect-icon{font-size:16px;}
+.pipeline-redirect-text{flex:1;}
+.pipeline-redirect-sub{font-size:10.5px;color:var(--text-muted);font-weight:400;display:block;margin-top:1px;}
+.pipeline-redirect-arrow{font-size:12px;opacity:0.6;}
+
+/* ── Verification Buttons ── */
+.verify-section{margin:0 12px 12px;display:flex;flex-direction:column;gap:6px;}
+.verify-btn{display:flex;align-items:center;gap:8px;padding:9px 12px;background:var(--bg-elevated);border:1px solid var(--border);border-radius:8px;cursor:pointer;transition:all var(--transition);text-decoration:none;color:var(--text-secondary);font-size:12px;font-weight:500;}
+.verify-btn:hover{background:var(--bg-hover);color:var(--accent);border-color:var(--accent-dim);}
+.verify-btn.loading{opacity:0.6;cursor:not-allowed;}
+.verify-btn-icon{font-size:14px;}
+.verify-modal{display:none;position:fixed;top:0;left:0;right:0;bottom:0;background:rgba(0,0,0,0.6);z-index:1000;align-items:center;justify-content:center;}
+.verify-modal.open{display:flex;}
+.verify-modal-content{background:var(--bg-surface);border:1px solid var(--border);border-radius:12px;padding:24px;max-width:600px;max-height:80vh;overflow-y:auto;box-shadow:var(--shadow-lg);}
+.verify-modal-close{position:absolute;top:16px;right:16px;background:none;border:none;color:var(--text-secondary);cursor:pointer;font-size:20px;}
+.verify-modal-title{font-size:18px;font-weight:600;color:var(--text-primary);margin-bottom:16px;}
+.verify-result{margin:12px 0;padding:12px;background:var(--bg-elevated);border-left:3px solid var(--accent);border-radius:4px;font-family:var(--font-mono);font-size:11px;color:var(--text-secondary);overflow-x:auto;white-space:pre-wrap;word-wrap:break-word;line-height:1.5;}
+.verify-result.error{border-left-color:var(--sev3);background:rgba(248,113,113,0.08);}
+.verify-result.success{border-left-color:var(--accent);}
+.verify-result.warning{border-left-color:var(--sev2);}
+.verify-loading{text-align:center;padding:20px;color:var(--text-muted);}
+.verify-spinner{display:inline-block;width:20px;height:20px;border:2px solid var(--border-mid);border-top-color:var(--accent);border-radius:50%;animation:spin 0.8s linear infinite;}
+@keyframes spin{to{transform:rotate(360deg);}}
+
+
+
+/* ═══════════════════════════════ MAIN ══════════════════════════════════ */
+.main{overflow-y:auto;display:flex;flex-direction:column;}
+.page-header{padding:28px 32px 0;display:flex;align-items:flex-start;justify-content:space-between;}
+.page-title{font-size:22px;font-weight:600;letter-spacing:-.5px;color:var(--text-primary);}
+.page-subtitle{font-size:13px;color:var(--text-muted);margin-top:3px;}
+.page-body{padding:24px 32px 32px;}
+.screen{display:none;flex-direction:column;flex:1;}
+.screen.active{display:flex;}
+
+/* ═══════════════════════════════ OVERVIEW ══════════════════════════════ */
+.metrics-row{display:grid;grid-template-columns:repeat(4,1fr);gap:14px;margin-bottom:28px;}
+.metric-card{background:var(--bg-surface);border:1px solid var(--border);border-radius:var(--radius-md);padding:18px 20px;transition:border-color var(--transition),box-shadow var(--transition);}
+.metric-card:hover{border-color:var(--border-mid);box-shadow:var(--shadow);}
+.metric-label{font-size:11px;font-weight:600;text-transform:uppercase;letter-spacing:.07em;color:var(--text-muted);margin-bottom:8px;}
+.metric-value{font-size:20px;font-weight:600;color:var(--text-primary);letter-spacing:-.5px;font-family:var(--font-mono);}
+.metric-sub{font-size:11.5px;color:var(--text-muted);margin-top:4px;}
+.metric-card.accent-card{background:var(--accent-subtle);border-color:rgba(45,212,191,.2);}
+.metric-card.accent-card .metric-value{color:var(--accent);}
+.section-title{font-size:13px;font-weight:600;text-transform:uppercase;letter-spacing:.07em;color:var(--text-muted);margin-bottom:14px;display:flex;align-items:center;gap:8px;}
+.section-title::after{content:'';flex:1;height:1px;background:var(--border);}
+.timeline{display:flex;flex-direction:column;gap:10px;margin-bottom:28px;}
+.timeline-item{background:var(--bg-surface);border:1px solid var(--border);border-radius:var(--radius-md);padding:14px 18px;display:grid;grid-template-columns:auto 1fr auto;gap:14px;align-items:start;transition:all var(--transition);}
+.timeline-item:hover{border-color:var(--border-mid);background:var(--bg-elevated);transform:translateX(2px);}
+.timeline-item.sev3{border-left:3px solid var(--sev3);}
+.timeline-item.sev2{border-left:3px solid var(--sev2);}
+.timeline-item.sev1{border-left:3px solid var(--sev1);}
+.timeline-dot{width:8px;height:8px;border-radius:50%;margin-top:5px;flex-shrink:0;}
+.sev3 .timeline-dot{background:var(--sev3);box-shadow:0 0 6px var(--sev3);}
+.sev2 .timeline-dot{background:var(--sev2);box-shadow:0 0 6px var(--sev2);}
+.sev1 .timeline-dot{background:var(--sev1);}
+.timeline-meta{display:flex;align-items:center;gap:10px;margin-bottom:4px;}
+.timeline-date{font-size:11px;font-family:var(--font-mono);color:var(--text-muted);}
+.timeline-tag{font-size:10px;font-weight:600;text-transform:uppercase;letter-spacing:.06em;padding:2px 8px;border-radius:20px;}
+.tag-price_change{background:var(--sev3-bg);color:var(--sev3);}
+.tag-sla_violation{background:var(--sev2-bg);color:var(--sev2);}
+.tag-term_change{background:var(--sev3-bg);color:var(--sev3);}
+.tag-commitment{background:var(--sev1-bg);color:var(--sev1);}
+.tag-incident{background:var(--sev2-bg);color:var(--sev2);}
+.timeline-summary{font-size:13.5px;color:var(--text-primary);}
+.timeline-value{font-size:12px;color:var(--text-secondary);margin-top:3px;font-family:var(--font-mono);}
+.timeline-source{font-size:11px;color:var(--text-muted);font-family:var(--font-mono);white-space:nowrap;margin-top:2px;}
+.btn{display:inline-flex;align-items:center;gap:8px;padding:10px 20px;border-radius:8px;font-family:var(--font-sans);font-size:13.5px;font-weight:500;cursor:pointer;border:none;transition:all var(--transition);}
+.btn-primary{background:var(--accent);color:#0D1A19;}
+.btn-primary:hover{background:var(--accent-dim);transform:translateY(-1px);box-shadow:0 4px 14px rgba(45,212,191,.3);}
+.btn-primary:active{transform:translateY(0);}
+.btn-secondary{background:var(--bg-elevated);color:var(--text-secondary);border:1px solid var(--border);}
+.btn-secondary:hover{background:var(--bg-hover);color:var(--text-primary);border-color:var(--border-mid);}
+.btn:disabled{opacity:.5;cursor:not-allowed;transform:none!important;}
+.brief-output{background:var(--bg-surface);border:1px solid var(--border);border-radius:var(--radius-lg);padding:24px 28px;margin-top:20px;display:none;}
+.brief-output.visible{display:block;}
+
+/* ═══════════════════════════════ CHAT ══════════════════════════════════ */
+.chat-screen{display:none;flex-direction:column;height:100vh;overflow:hidden;}
+.chat-screen.active{display:flex;}
+.chat-header{padding:28px 32px 20px;border-bottom:1px solid var(--border);flex-shrink:0;}
+.quick-questions{display:flex;gap:8px;flex-wrap:wrap;margin-top:14px;}
+.quick-btn{font-family:var(--font-sans);font-size:12px;padding:7px 14px;background:var(--bg-elevated);border:1px solid var(--border);border-radius:20px;color:var(--text-secondary);cursor:pointer;transition:all var(--transition);white-space:nowrap;}
+.quick-btn:hover{background:var(--accent-subtle);border-color:var(--accent-dim);color:var(--accent);}
+.messages-area{flex:1;overflow-y:auto;padding:24px 32px;display:flex;flex-direction:column;gap:20px;scroll-behavior:smooth;}
+.messages-area::-webkit-scrollbar{width:4px;}
+.messages-area::-webkit-scrollbar-thumb{background:var(--border-mid);border-radius:2px;}
+.empty-state{flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:12px;color:var(--text-muted);text-align:center;}
+.empty-icon{font-size:36px;opacity:.4;margin-bottom:4px;}
+.empty-title{font-size:16px;font-weight:500;color:var(--text-secondary);}
+.empty-sub{font-size:13px;max-width:280px;line-height:1.5;}
+.msg{display:flex;gap:12px;align-items:flex-start;animation:msgIn .25s ease;}
+@keyframes msgIn{from{opacity:0;transform:translateY(8px);}to{opacity:1;transform:translateY(0);}}
+.msg-avatar{width:30px;height:30px;border-radius:8px;flex-shrink:0;display:flex;align-items:center;justify-content:center;font-size:13px;margin-top:2px;}
+.msg.user .msg-avatar{background:var(--bg-elevated);border:1px solid var(--border);color:var(--text-secondary);order:2;}
+.msg.assistant .msg-avatar{background:var(--accent-glow);border:1px solid rgba(45,212,191,.25);color:var(--accent);}
+.msg.user{flex-direction:row-reverse;}
+.msg-body{max-width:72%;display:flex;flex-direction:column;gap:4px;}
+.msg.user .msg-body{align-items:flex-end;}
+.msg-bubble{padding:12px 16px;border-radius:var(--radius-md);font-size:14px;line-height:1.65;}
+.msg.user .msg-bubble{background:var(--accent-subtle);border:1px solid rgba(45,212,191,.15);color:var(--text-primary);border-radius:var(--radius-md) var(--radius-md) var(--radius-sm) var(--radius-md);}
+.msg.assistant .msg-bubble{background:var(--bg-surface);border:1px solid var(--border);color:var(--text-primary);border-radius:var(--radius-md) var(--radius-md) var(--radius-md) var(--radius-sm);}
+.msg.assistant .msg-bubble h1,.msg.assistant .msg-bubble h2,.msg.assistant .msg-bubble h3{font-size:14px;font-weight:600;color:var(--text-primary);margin:14px 0 6px;padding-bottom:4px;border-bottom:1px solid var(--border);}
+.msg.assistant .msg-bubble h3:first-child{margin-top:0;}
+.msg.assistant .msg-bubble ul,.msg.assistant .msg-bubble ol{padding-left:18px;margin:8px 0;}
+.msg.assistant .msg-bubble li{margin-bottom:5px;font-size:13.5px;}
+.msg.assistant .msg-bubble p{margin:6px 0;font-size:13.5px;}
+.msg.assistant .msg-bubble p:first-child{margin-top:0;}
+.msg.assistant .msg-bubble p:last-child{margin-bottom:0;}
+.msg.assistant .msg-bubble strong{font-weight:600;}
+.msg.assistant .msg-bubble code{font-family:var(--font-mono);font-size:12px;background:var(--bg-elevated);padding:1px 6px;border-radius:4px;color:var(--accent);}
+.msg.assistant .msg-bubble blockquote{margin:10px 0 4px;padding:8px 14px;border-left:3px solid var(--accent);background:var(--accent-subtle);border-radius:0 8px 8px 0;font-size:13px;color:var(--accent);}
+.msg-time{font-size:10.5px;color:var(--text-muted);font-family:var(--font-mono);padding:0 4px;}
+.thinking{display:flex;align-items:center;gap:5px;padding:14px 18px;}
+.thinking-dot{width:6px;height:6px;background:var(--accent);border-radius:50%;animation:pulse 1.2s ease-in-out infinite;}
+.thinking-dot:nth-child(2){animation-delay:.2s;}
+.thinking-dot:nth-child(3){animation-delay:.4s;}
+@keyframes pulse{0%,60%,100%{opacity:.2;transform:scale(.85);}30%{opacity:1;transform:scale(1.1);}}
+.chat-input-bar{padding:16px 32px 24px;border-top:1px solid var(--border);flex-shrink:0;background:var(--bg-base);}
+.input-wrapper{display:flex;gap:10px;align-items:flex-end;background:var(--bg-surface);border:1px solid var(--border);border-radius:var(--radius-lg);padding:10px 14px;transition:border-color var(--transition),box-shadow var(--transition);}
+.input-wrapper:focus-within{border-color:var(--accent-dim);box-shadow:0 0 0 3px var(--accent-glow);}
+.chat-textarea{flex:1;background:none;border:none;outline:none;font-family:var(--font-sans);font-size:14px;color:var(--text-primary);resize:none;min-height:22px;max-height:120px;line-height:1.5;padding:1px 0;}
+.chat-textarea::placeholder{color:var(--text-muted);}
+.send-btn{width:34px;height:34px;background:var(--accent);border:none;border-radius:8px;cursor:pointer;display:flex;align-items:center;justify-content:center;flex-shrink:0;transition:all var(--transition);color:#0D1A19;font-size:15px;}
+.send-btn:hover{background:var(--accent-dim);transform:scale(1.05);}
+.send-btn:disabled{opacity:.4;cursor:not-allowed;transform:none;}
+
+/* ═══════════════════════════════ ALERTS ════════════════════════════════ */
+.alerts-summary{display:grid;grid-template-columns:1fr 1fr;gap:14px;margin-bottom:28px;}
+.alert-stat{background:var(--bg-surface);border:1px solid var(--border);border-radius:var(--radius-md);padding:18px 20px;display:flex;align-items:center;gap:14px;}
+.alert-stat.critical{border-color:rgba(248,113,113,.25);background:var(--sev3-bg);}
+.alert-stat.notable{border-color:rgba(251,191,36,.2);background:var(--sev2-bg);}
+.alert-stat-icon{font-size:24px;}
+.alert-stat-count{font-size:28px;font-weight:700;font-family:var(--font-mono);letter-spacing:-1px;}
+.alert-stat.critical .alert-stat-count{color:var(--sev3);}
+.alert-stat.notable .alert-stat-count{color:var(--sev2);}
+.alert-stat-label{font-size:12px;color:var(--text-secondary);margin-top:2px;}
+.alert-cards{display:flex;flex-direction:column;gap:12px;}
+.alert-card{background:var(--bg-surface);border:1px solid var(--border);border-radius:var(--radius-md);padding:18px 20px;transition:all var(--transition);}
+.alert-card:hover{border-color:var(--border-mid);box-shadow:var(--shadow);}
+.alert-card.sev3{border-left:3px solid var(--sev3);}
+.alert-card.sev2{border-left:3px solid var(--sev2);}
+.alert-card-header{display:flex;align-items:center;gap:10px;margin-bottom:10px;}
+.alert-badge{font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:.07em;padding:3px 10px;border-radius:20px;}
+.sev3 .alert-badge{background:var(--sev3-bg);color:var(--sev3);}
+.sev2 .alert-badge{background:var(--sev2-bg);color:var(--sev2);}
+.alert-card-date{font-size:11.5px;font-family:var(--font-mono);color:var(--text-muted);}
+.alert-card-type{margin-left:auto;font-size:11px;color:var(--text-muted);text-transform:capitalize;}
+.alert-card-summary{font-size:14px;color:var(--text-primary);margin-bottom:8px;line-height:1.5;}
+.alert-card-value{font-size:12.5px;color:var(--text-secondary);font-family:var(--font-mono);background:var(--bg-elevated);padding:6px 10px;border-radius:8px;margin-bottom:8px;}
+.alert-card-source{font-size:11px;color:var(--text-muted);font-family:var(--font-mono);}
+.cta-strip{margin-top:20px;background:var(--accent-subtle);border:1px solid rgba(45,212,191,.2);border-radius:var(--radius-md);padding:14px 18px;display:flex;align-items:center;justify-content:space-between;gap:12px;}
+.cta-text{font-size:13px;color:var(--text-secondary);}
+.cta-text strong{color:var(--accent);}
+
+/* ═══════════════════════════════ MARKDOWN ══════════════════════════════ */
+.md-render h2{font-size:15px;font-weight:600;color:var(--text-primary);margin:20px 0 10px;padding-bottom:6px;border-bottom:1px solid var(--border);}
+.md-render h2:first-child{margin-top:0;}
+.md-render h3{font-size:13.5px;font-weight:600;margin:14px 0 6px;color:var(--text-secondary);}
+.md-render ul,.md-render ol{padding-left:20px;margin:8px 0;}
+.md-render li{font-size:13.5px;margin-bottom:6px;line-height:1.6;}
+.md-render p{font-size:13.5px;margin:8px 0;line-height:1.6;}
+.md-render strong{font-weight:600;}
+.md-render hr{border:none;border-top:1px solid var(--border);margin:18px 0;}
+.md-render blockquote{margin:12px 0;padding:10px 16px;border-left:3px solid var(--accent);background:var(--accent-subtle);border-radius:0 8px 8px 0;font-size:13px;color:var(--accent);}
+
+
+/* ═══════════════════════════════ MISC ══════════════════════════════════ */
+.spinner{width:16px;height:16px;border:2px solid var(--border-mid);border-top-color:var(--accent);border-radius:50%;animation:spin .7s linear infinite;display:inline-block;}
+@keyframes spin{to{transform:rotate(360deg);}}
+::-webkit-scrollbar{width:5px;height:5px;}
+::-webkit-scrollbar-track{background:transparent;}
+::-webkit-scrollbar-thumb{background:var(--border-mid);border-radius:3px;}
+.toast{position:fixed;bottom:24px;right:24px;background:var(--bg-elevated);border:1px solid var(--border-mid);border-radius:var(--radius-md);padding:12px 18px;font-size:13px;color:var(--text-primary);box-shadow:var(--shadow-lg);z-index:200;transform:translateY(80px);opacity:0;transition:all .3s ease;}
+.toast.show{transform:translateY(0);opacity:1;}
+</style>
+</head>
+
+<body>
+<div class="app">
+
+  <!-- ══════════════ SIDEBAR ══════════════ -->
+  <aside class="sidebar">
+    <div class="sidebar-header">
+      <div class="logo">
+        <div class="logo-icon">🔍</div>
+        <span class="logo-name">VendorPulse</span>
+      </div>
+      <div class="logo-tagline">Procurement intelligence</div>
+    </div>
+
+    <nav class="nav">
+      <div class="nav-label">Workspace</div>
+      <button class="nav-item active" data-screen="overview" onclick="switchScreen('overview',this)">
+        <span class="nav-icon">◈</span> Overview
+      </button>
+      <button class="nav-item" data-screen="chat" onclick="switchScreen('chat',this)">
+        <span class="nav-icon">◎</span> Chat
+      </button>
+      <button class="nav-item" data-screen="alerts" onclick="switchScreen('alerts',this)">
+        <span class="nav-icon">◉</span> Drift Alerts
+        <span class="badge" id="alert-badge">0</span>
+      </button>
+    </nav>
+
+    <!-- ── PIPELINE REDIRECT ── -->
+    <a class="pipeline-redirect" href="/pipeline">
+      <span class="pipeline-redirect-icon">⬆</span>
+      <span class="pipeline-redirect-text">
+        Open Pipeline UI
+        <span class="pipeline-redirect-sub">Document ingestion</span>
+      </span>
+      <span class="pipeline-redirect-arrow">↗</span>
+    </a>
+
+    <!-- ── VERIFICATION TOOLS ── -->
+    <div class="verify-section">
+      <button class="verify-btn" onclick="showHindsightVerification()">
+        <span class="verify-btn-icon">🔍</span>
+        <span>Verify Hindsight</span>
+      </button>
+      <button class="verify-btn" id="debug-vendor-btn" onclick="showDebugVendor()" style="display:none;">
+        <span class="verify-btn-icon">🔧</span>
+        <span>Debug Vendor</span>
+      </button>
+    </div>
+
+    <div class="vendors-section" id="vendors-section">
+      <div class="vendors-header">Vendors</div>
+      <div class="vendors-list" id="vendors-list">
+        <div class="vendor-item" style="color:var(--text-muted);cursor:default;">Loading...</div>
+      </div>
+    </div>
+
+    <div class="theme-toggle" onclick="toggleTheme()">
+      <span class="theme-toggle-label">
+        <span id="theme-icon">🌙</span>
+        <span id="theme-label">Dark mode</span>
+      </span>
+      <div class="toggle-switch" id="toggle-sw">
+        <div class="toggle-knob"></div>
+      </div>
+    </div>
+  </aside>
+
+  <!-- ══════════════ MAIN ══════════════ -->
+  <main class="main" id="main-area">
+
+    <!-- ── OVERVIEW ── -->
+    <div class="screen active" id="screen-overview">
+      <div class="page-header">
+        <div>
+          <div class="page-title">Vendor Overview</div>
+          <div class="page-subtitle">Baseline contract terms and full event history</div>
+        </div>
+        <button class="btn btn-primary" onclick="generateBrief()" id="brief-btn">
+          <span>📄</span> Generate brief
+        </button>
+      </div>
+      <div class="page-body">
+        <div class="metrics-row" id="metrics-row">
+          <div class="metric-card"><div class="metric-label">Loading...</div></div>
+        </div>
+        <div class="section-title">Event timeline</div>
+        <div class="timeline" id="timeline"></div>
+        <div class="brief-output md-render" id="brief-output"></div>
+      </div>
+    </div>
+
+    <!-- ── CHAT ── -->
+    <div class="screen chat-screen" id="screen-chat">
+      <div class="chat-header">
+        <div class="page-title">Ask VendorPulse</div>
+        <div class="page-subtitle">Ask anything about your vendors — the agent has full memory</div>
+        
+        <!-- Vendor Info Section -->
+        <div id="chat-vendor-info" style="margin-top: 16px; padding: 14px; background: var(--bg-elevated); border: 1px solid var(--border); border-radius: 8px; display: none;">
+          <div style="font-size: 10px; color: var(--text-muted); text-transform: uppercase; letter-spacing: 0.07em; font-weight: 600; margin-bottom: 10px;">Current Vendor Context</div>
+          <div id="chat-vendor-metrics" style="display: grid; grid-template-columns: 1fr 1fr; gap: 10px; font-size: 12px;">
+            <div><span style="color: var(--text-muted);">Price:</span> <span id="chat-price" style="color: var(--text-primary); font-weight: 500;">—</span></div>
+            <div><span style="color: var(--text-muted);">SLA:</span> <span id="chat-sla" style="color: var(--text-primary); font-weight: 500;">—</span></div>
+            <div><span style="color: var(--text-muted);">Renewal:</span> <span id="chat-renewal" style="color: var(--text-primary); font-weight: 500;">—</span></div>
+            <div><span style="color: var(--text-muted);">Events:</span> <span id="chat-events" style="color: var(--text-primary); font-weight: 500;">—</span></div>
+          </div>
+        </div>
+        
+        <div class="quick-questions">
+          <button class="quick-btn" onclick="sendQuick('Give me a brief on this vendor before my renewal call')">📋 Pre-renewal brief</button>
+          <button class="quick-btn" onclick="sendQuick('What commitments have not been delivered?')">🚩 Broken promises</button>
+          <button class="quick-btn" onclick="sendQuick('What is the difference between the old and new pricing?')">💰 Price difference</button>
+          <button class="quick-btn" onclick="sendQuick('What should I know about SLA compliance and violations?')">📑 SLA status</button>
+        </div>
+      </div>
+      <div class="messages-area" id="messages-area">
+        <div class="empty-state" id="empty-state">
+          <div class="empty-icon">💬</div>
+          <div class="empty-title">Start a conversation</div>
+          <div class="empty-sub">Ask anything about your vendors' contract history, pricing, or compliance</div>
+        </div>
+      </div>
+      <div class="chat-input-bar">
+        <div class="input-wrapper">
+          <textarea class="chat-textarea" id="chat-input" placeholder="Ask anything about this vendor..." rows="1" onkeydown="handleKey(event)" oninput="autoResize(this)"></textarea>
+          <button class="send-btn" id="send-btn" onclick="sendMessage()">➤</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- ── ALERTS ── -->
+    <div class="screen" id="screen-alerts">
+      <div class="page-header">
+        <div>
+          <div class="page-title">Drift Alerts</div>
+          <div class="page-subtitle">What you didn't know you were losing — severity 2 and 3 only</div>
+        </div>
+      </div>
+      <div class="page-body">
+        <div class="alerts-summary" id="alerts-summary"></div>
+        <div class="section-title">All alerts</div>
+        <div class="alert-cards" id="alert-cards"></div>
+        <div class="cta-strip">
+          <span class="cta-text">Ready to negotiate? Ask: <strong>"What should I do about these before my renewal call?"</strong></span>
+          <button class="btn btn-primary" onclick="sendQuick('What should I do about the drift alerts before my renewal call?');switchScreen('chat',document.querySelector('[data-screen=chat]'))">Open chat →</button>
+        </div>
+      </div>
+    </div>
+
+  </main>
+</div>
+
+
+<!-- Toast -->
+<div class="toast" id="toast"></div>
+
+<script>
+/* ════════════════════ STATE ════════════════════ */
+let activeVendorId = '';   // set by loadOverview(); used by chat and brief
+
+/* ════════════════════ THEME ════════════════════ */
+let isDark = true;
+function toggleTheme() {
+  isDark = !isDark;
+  document.documentElement.setAttribute('data-theme', isDark ? 'dark' : 'light');
+  document.getElementById('theme-icon').textContent  = isDark ? '🌙' : '☀️';
+  document.getElementById('theme-label').textContent = isDark ? 'Dark mode' : 'Light mode';
+  document.getElementById('toggle-sw').classList.toggle('on', !isDark);
+}
+
+/* ════════════════════ NAVIGATION ════════════════════ */
+function switchScreen(name, btn) {
+  document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
+  document.querySelectorAll('.nav-item').forEach(b => b.classList.remove('active'));
+  document.getElementById('screen-' + name).classList.add('active');
+  if (btn) btn.classList.add('active');
+  
+  // Update chat vendor info when switching to chat screen
+  if (name === 'chat') {
+    updateChatVendorInfo();
+  }
+}
+
+/* ════════════════════ OVERVIEW ════════════════════ */
+async function loadOverview() {
+  try {
+    const res  = await fetch('/api/overview');
+    if (!res.ok) { showToast('Server error ' + res.status); return; }
+    const data = await res.json();
+    // API returns {vendors: [...], data: {<vendor_id>: {baseline:{}, events:[]}}}
+    const vendors = data.vendors || [];
+    const allData = data.data || {};
+    
+    // Populate vendor list in sidebar with "All Vendors" option
+    const vendorsList = document.getElementById('vendors-list');
+    if (vendors.length > 0) {
+      const allVendorsItem = `
+        <div class="vendor-item ${activeVendorId === 'all' ? 'active' : ''}" onclick="selectVendor('all')">
+          <div class="vendor-item-name">📊 ALL VENDORS</div>
+          <div class="vendor-item-status">${vendors.length} loaded</div>
+        </div>`;
+      const vendorItems = vendors.map(v => `
+        <div class="vendor-item ${v === activeVendorId ? 'active' : ''}" onclick="selectVendor('${v}')">
+          <div class="vendor-item-name">${v.toUpperCase()}</div>
+          <div class="vendor-item-status">${allData[v]?.baseline ? '✓ Data loaded' : '—'}</div>
+        </div>
+      `).join('');
+      vendorsList.innerHTML = allVendorsItem + vendorItems;
+    } else {
+      vendorsList.innerHTML = '<div class="vendor-item" style="color:var(--text-muted);cursor:default;">No vendors</div>';
+    }
+
+    // Default selection: "All Vendors" if available, else first vendor
+    if (!activeVendorId && vendors.length > 0) {
+      activeVendorId = 'all';
+    }
+    
+    const vendor = activeVendorId;
+    
+    // Handle "all vendors" view
+    if (vendor === 'all') {
+      const allEvents = [];
+      let totalCount = 0;
+      let breachCount = 0;
+      let notableCount = 0;
+      
+      for (const v of vendors) {
+        const vdata = allData[v];
+        if (vdata && vdata.events) {
+          allEvents.push(...vdata.events.map(e => ({...e, vendor: v})));
+          totalCount += vdata.events.length;
+          breachCount += vdata.events.filter(e => e.severity === 3).length;
+          notableCount += vdata.events.filter(e => e.severity === 2).length;
+        }
+      }
+      
+      document.getElementById('metrics-row').innerHTML = `
+        <div class="metric-card accent-card">
+          <div class="metric-label">Vendors tracked</div>
+          <div class="metric-value">${vendors.length}</div>
+          <div class="metric-sub">All registered vendors</div>
+        </div>
+        <div class="metric-card">
+          <div class="metric-label">Total events</div>
+          <div class="metric-value">${totalCount}</div>
+          <div class="metric-sub">${breachCount} breach · ${notableCount} notable</div>
+        </div>
+        <div class="metric-card">
+          <div class="metric-label">Vendors status</div>
+          <div class="metric-value" style="font-size:15px;margin-top:2px">${vendors.join(' • ')}</div>
+          <div class="metric-sub">Across all portfolio</div>
+        </div>`;
+      
+      const sorted = [...allEvents].sort((a,b) => (b.date || '').localeCompare(a.date || ''));
+      document.getElementById('timeline').innerHTML = sorted.length ? sorted.map(ev => `
+        <div class="timeline-item sev${ev.severity}">
+          <div class="timeline-dot"></div>
+          <div class="timeline-content">
+            <div class="timeline-meta">
+              <span class="timeline-date">${ev.date}</span>
+              <span class="timeline-tag tag-${ev.fact_type}">${ev.vendor.toUpperCase()} • ${ev.fact_type.replace('_',' ')}</span>
+            </div>
+            <div class="timeline-summary">${ev.summary}</div>
+            <div class="timeline-value">${ev.value}</div>
+          </div>
+          <div class="timeline-source">${ev.source_doc}</div>
+        </div>`).join('')
+        : '<p style="color:var(--text-muted);font-size:13px;padding:20px 0;">No events recorded yet.</p>';
+      
+      return;
+    }
+    
+    // Single vendor view
+    const vdata  = vendor ? allData[vendor] : null;
+    const b      = vdata ? vdata.baseline : null;
+    const evts   = vdata ? (vdata.events || []) : [];
+
+    if (!b) {
+      document.getElementById('metrics-row').innerHTML = `
+        <div class="metric-card" style="grid-column:1/-1;text-align:center;padding:36px;">
+          <div class="metric-label" style="font-size:14px;text-transform:none;letter-spacing:0;margin-bottom:10px;">
+            ${vendors.length === 0 ? '📂 No vendor data loaded yet' : '⚠️ Vendor data not available'}
+          </div>
+          <div class="metric-sub" style="font-size:13px;">
+            ${vendors.length === 0 ? 'Upload a baseline contract via the Pipeline UI to get started.' : 'No memory data found. You can still chat about this vendor.'}
+          </div>
+          ${vendors.length === 0 ? `<a href="/pipeline" style="display:inline-block;margin-top:16px;padding:9px 20px;
+            background:var(--accent-subtle);color:var(--accent);border:1px solid rgba(45,212,191,.3);
+            border-radius:8px;font-size:13px;text-decoration:none;font-weight:500;">
+            → Open Pipeline UI
+          </a>` : ''}
+        </div>`;
+      document.getElementById('timeline').innerHTML = '';
+      return;
+    }
+
+    document.getElementById('metrics-row').innerHTML = `
+      <div class="metric-card accent-card">
+        <div class="metric-label">Agreed price</div>
+        <div class="metric-value">${b.agreed_price || '—'}</div>
+        <div class="metric-sub">From ${b.contract_start || '—'}</div>
+      </div>
+      <div class="metric-card">
+        <div class="metric-label">SLA commitment</div>
+        <div class="metric-value" style="font-size:15px;margin-top:2px">${b.sla_terms || '—'}</div>
+        <div class="metric-sub">Original contract</div>
+      </div>
+      <div class="metric-card">
+        <div class="metric-label">Renewal date</div>
+        <div class="metric-value" style="font-size:17px">${b.renewal_date || '—'}</div>
+        <div class="metric-sub">Rep: ${b.rep_name || '—'}</div>
+      </div>
+      <div class="metric-card">
+        <div class="metric-label">Events logged</div>
+        <div class="metric-value">${evts.length}</div>
+        <div class="metric-sub">${evts.filter(e=>e.severity===3).length} breach · ${evts.filter(e=>e.severity===2).length} notable</div>
+      </div>`;
+
+    const sorted = [...evts].sort((a,b)=>a.date.localeCompare(b.date));
+    document.getElementById('timeline').innerHTML = sorted.length ? sorted.map(ev => `
+      <div class="timeline-item sev${ev.severity}">
+        <div class="timeline-dot"></div>
+        <div class="timeline-content">
+          <div class="timeline-meta">
+            <span class="timeline-date">${ev.date}</span>
+            <span class="timeline-tag tag-${ev.fact_type}">${ev.fact_type.replace('_',' ')}</span>
+          </div>
+          <div class="timeline-summary">${ev.summary}</div>
+          <div class="timeline-value">${ev.value}</div>
+        </div>
+        <div class="timeline-source">${ev.source_doc}</div>
+      </div>`).join('')
+      : '<p style="color:var(--text-muted);font-size:13px;padding:20px 0;">No events recorded yet.</p>';
+
+  } catch(e) {
+    console.error('[loadOverview]', e);
+    showToast('Could not load data: ' + e.message + ' — is server.py running?');
+  }
+  
+  // Update chat vendor info panel
+  updateChatVendorInfo();
+}
+
+/* ════════════════════ VENDOR SELECTION ════════════════════ */
+function updateChatVendorInfo() {
+  // Update the vendor metrics displayed in the chat header
+  const vendorInfoDiv = document.getElementById('chat-vendor-info');
+  if (!vendorInfoDiv) return;
+  
+  const vendor = activeVendorId;
+  if (!vendor || vendor === 'all') {
+    vendorInfoDiv.style.display = 'none';
+    return;
+  }
+  
+  // Fetch the overview data to get vendor baseline
+  fetch('/api/overview')
+    .then(r => r.json())
+    .then(data => {
+      const vdata = data.data?.[vendor];
+      if (vdata?.baseline) {
+        const b = vdata.baseline;
+        const evts = vdata.events || [];
+        
+        document.getElementById('chat-price').textContent = b.agreed_price || '—';
+        document.getElementById('chat-sla').textContent = b.sla_terms || '—';
+        document.getElementById('chat-renewal').textContent = b.renewal_date || '—';
+        document.getElementById('chat-events').textContent = evts.length + ' recorded';
+        
+        vendorInfoDiv.style.display = 'block';
+      } else {
+        vendorInfoDiv.style.display = 'none';
+      }
+    })
+    .catch(e => {
+      vendorInfoDiv.style.display = 'none';
+    });
+}
+
+function selectVendor(vendorId) {
+  activeVendorId = vendorId;
+  // Update active state in sidebar
+  document.querySelectorAll('.vendor-item').forEach(item => item.classList.remove('active'));
+  event.target.closest('.vendor-item')?.classList.add('active');
+  // Update vendor info in chat screen
+  updateChatVendorInfo();
+  // Reload overview for selected vendor (optional: could just update metrics)
+  // For now, we just update activeVendorId which will be used in chat/brief
+  showToast('Switched to ' + vendorId.toUpperCase());
+}
+
+/* ════════════════════ ALERTS ════════════════════ */
+async function loadAlerts() {
+  try {
+    const alerts   = await (await fetch('/api/alerts')).json();
+    const breaches = alerts.filter(a=>a.severity===3);
+    const notable  = alerts.filter(a=>a.severity===2);
+
+    document.getElementById('alert-badge').textContent = alerts.length;
+
+    document.getElementById('alerts-summary').innerHTML = `
+      <div class="alert-stat critical">
+        <span class="alert-stat-icon">🔴</span>
+        <div><div class="alert-stat-count">${breaches.length}</div><div class="alert-stat-label">Material breach(es)</div></div>
+      </div>
+      <div class="alert-stat notable">
+        <span class="alert-stat-icon">🟡</span>
+        <div><div class="alert-stat-count">${notable.length}</div><div class="alert-stat-label">Notable event(s)</div></div>
+      </div>`;
+
+    document.getElementById('alert-cards').innerHTML = alerts.map(a=>`
+      <div class="alert-card sev${a.severity}">
+        <div class="alert-card-header">
+          <span class="alert-badge">${a.severity===3?'Material breach':'Notable'}</span>
+          <span class="alert-card-date">${a.date}</span>
+          <span class="alert-card-type">${a.fact_type.replace('_',' ')}</span>
+        </div>
+        <div class="alert-card-summary">${a.summary}</div>
+        <div class="alert-card-value">${a.value}</div>
+        <div class="alert-card-source">Source: ${a.source_doc}</div>
+      </div>`).join('');
+  } catch(e) { console.error('Alerts load failed', e); }
+}
+
+/* ════════════════════ BRIEF ════════════════════ */
+async function generateBrief() {
+  // Validate that a vendor is selected
+  if (!activeVendorId || activeVendorId.trim() === '') {
+    showToast('⚠️ No vendor loaded. Please load overview first or ensure vendor data exists.');
+    return;
+  }
+  
+  // Brief generation is vendor-specific; prompt user to select a vendor if "all" is selected
+  if (activeVendorId === 'all') {
+    showToast('📋 Brief generation works per vendor. Please select a specific vendor from the sidebar.');
+    return;
+  }
+  
+  const btn = document.getElementById('brief-btn');
+  const out = document.getElementById('brief-output');
+  btn.disabled = true;
+  btn.innerHTML = '<span class="spinner"></span> Generating...';
+  out.classList.remove('visible');
+  try {
+    // server.py expects: POST /api/brief?vendor_id=<id>
+    const res = await fetch(`/api/brief?vendor_id=${encodeURIComponent(activeVendorId)}`,{method:'POST'});
+    if (!res.ok) {
+      const err = await res.json();
+      showToast('Error: ' + (err.detail || 'Failed to generate brief'));
+      return;
+    }
+    const data = await res.json();
+    out.innerHTML = marked.parse(data.brief || 'No brief generated.');
+    out.classList.add('visible');
+    out.scrollIntoView({behavior:'smooth',block:'nearest'});
+  } catch(e) { 
+    showToast('Failed to generate brief: ' + (e.message || 'Unknown error'));
+  }
+  finally { btn.disabled=false; btn.innerHTML='<span>📄</span> Generate brief'; }
+}
+
+/* ════════════════════ CHAT ════════════════════ */
+let isLoading = false;
+function now(){ return new Date().toLocaleTimeString([],{hour:'2-digit',minute:'2-digit'}); }
+
+function appendMsg(role, html) {
+  const area = document.getElementById('messages-area');
+  document.getElementById('empty-state')?.remove();
+  const div = document.createElement('div');
+  div.className = `msg ${role}`;
+  div.innerHTML = `
+    <div class="msg-avatar">${role==='user'?'👤':'⬡'}</div>
+    <div class="msg-body">
+      <div class="msg-bubble">${html}</div>
+      <div class="msg-time">${now()}</div>
+    </div>`;
+  area.appendChild(div);
+  area.scrollTop = area.scrollHeight;
+}
+
+function appendThinking() {
+  const area = document.getElementById('messages-area');
+  document.getElementById('empty-state')?.remove();
+  const div = document.createElement('div');
+  div.className='msg assistant'; div.id='thinking-bubble';
+  div.innerHTML=`<div class="msg-avatar">⬡</div><div class="msg-body"><div class="msg-bubble"><div class="thinking"><div class="thinking-dot"></div><div class="thinking-dot"></div><div class="thinking-dot"></div></div></div></div>`;
+  area.appendChild(div);
+  area.scrollTop = area.scrollHeight;
+}
+
+async function sendMessage() {
+  if (isLoading) return;
+  const input = document.getElementById('chat-input');
+  const q = input.value.trim();
+  if (!q) return;
+  
+  // Validate that a vendor is selected
+  if (!activeVendorId || activeVendorId.trim() === '') {
+    appendMsg('assistant','<em>⚠️ No vendor loaded. Please load overview first or ensure vendor data exists.</em>');
+    return;
+  }
+  
+  input.value=''; input.style.height='auto';
+  isLoading=true; document.getElementById('send-btn').disabled=true;
+  appendMsg('user', escHtml(q));
+  appendThinking();
+  try {
+    // For multi-vendor, pass "all" as vendor_id; server will expand to all vendors
+    const vendorId = activeVendorId === 'all' ? 'all' : activeVendorId;
+    const reqBody = {vendor_id: vendorId, question: q};
+    const data = await (await fetch('/api/chat',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify(reqBody)})).json();
+    document.getElementById('thinking-bubble')?.remove();
+    if (data.error) {
+      appendMsg('assistant','<em>Server error: ' + escHtml(data.error) + '</em>');
+    } else {
+      appendMsg('assistant', marked.parse(data.answer||'No response.'));
+    }
+  } catch(e) {
+    document.getElementById('thinking-bubble')?.remove();
+    appendMsg('assistant','<em>Error contacting server: ' + escHtml(e.message || 'Unknown error') + '. Is server.py running?</em>');
+  } finally {
+    isLoading=false; document.getElementById('send-btn').disabled=false;
+    document.getElementById('chat-input').focus();
+  }
+}
+
+function sendQuick(q){
+  switchScreen('chat',document.querySelector('[data-screen="chat"]'));
+  document.getElementById('chat-input').value=q;
+  setTimeout(sendMessage,100);
+}
+function handleKey(e){ if(e.key==='Enter'&&!e.shiftKey){e.preventDefault();sendMessage();} }
+function autoResize(el){ el.style.height='auto'; el.style.height=Math.min(el.scrollHeight,120)+'px'; }
+
+/* ════════════════════ UTILS ════════════════════ */
+function escHtml(s){ return s.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;'); }
+function showToast(msg){
+  const t=document.getElementById('toast');
+  t.textContent=msg; t.classList.add('show');
+  setTimeout(()=>t.classList.remove('show'),3000);
+}
+
+/* ════════════════════ VERIFICATION TOOLS ════════════════════ */
+
+function showModal(title, content) {
+  // Create modal if not exists
+  let modal = document.getElementById('verify-modal');
+  if (!modal) {
+    modal = document.createElement('div');
+    modal.id = 'verify-modal';
+    modal.className = 'verify-modal';
+    document.body.appendChild(modal);
+  }
+  modal.innerHTML = `
+    <div class="verify-modal-content">
+      <button class="verify-modal-close" onclick="closeModal()">✕</button>
+      <div class="verify-modal-title">${title}</div>
+      <div id="modal-content">${content}</div>
+    </div>
+  `;
+  modal.classList.add('open');
+}
+
+function closeModal() {
+  const modal = document.getElementById('verify-modal');
+  if (modal) modal.classList.remove('open');
+}
+
+async function showHindsightVerification() {
+  showModal('Hindsight Verification', '<div class="verify-loading"><div class="verify-spinner"></div><p>Checking connection...</p></div>');
+  
+  try {
+    const res = await fetch('/api/verify');
+    if (!res.ok) throw new Error(`HTTP ${res.status}`);
+    const data = await res.json();
+    
+    let html = `<div class="verify-result ${data.connection_ok ? 'success' : 'error'}">`;
+    html += `✓ Hindsight Enabled: ${data.hindsight_enabled}\n`;
+    html += `✓ Connection OK: ${data.connection_ok}\n`;
+    html += `✓ Vendors Found: ${data.vendors_found.length}\n`;
+    html += `\nVendors:\n${data.vendors_found.join(', ') || '(none)'}\n\n`;
+    
+    if (data.vendor_status && Object.keys(data.vendor_status).length > 0) {
+      html += `Vendor Status:\n`;
+      for (const [vendor, status] of Object.entries(data.vendor_status)) {
+        html += `  ${vendor}:\n`;
+        html += `    - Baseline: ${status.has_baseline ? '✓ LOADED' : '✗ MISSING'}\n`;
+        html += `    - Events: ${status.events_count}\n`;
+        if (status.event_types && status.event_types.length > 0) {
+          html += `    - Types: ${status.event_types.join(', ')}\n`;
+        }
+        html += `\n`;
+      }
+    }
+    
+    if (data.errors && data.errors.length > 0) {
+      html += `\nErrors:\n`;
+      for (const err of data.errors) {
+        html += `  ✗ ${err}\n`;
+      }
+      html = `<div class="verify-result error">${html}</div>`;
+    } else {
+      html += `</div>`;
+    }
+    
+    // Show debug button if vendors found
+    if (data.vendors_found.length > 0) {
+      document.getElementById('debug-vendor-btn').style.display = 'flex';
+    }
+    
+    document.getElementById('modal-content').innerHTML = html;
+  } catch(e) {
+    const errorHtml = `<div class="verify-result error">Connection Failed: ${e.message}\n\nMake sure server.py is running and accessible.</div>`;
+    document.getElementById('modal-content').innerHTML = errorHtml;
+  }
+}
+
+async function showDebugVendor() {
+  if (!activeVendorId) {
+    showToast('⚠️ Please select a vendor first');
+    return;
+  }
+  
+  const vendorId = activeVendorId === 'all' ? 'aws' : activeVendorId;
+  showModal(`Debug: ${vendorId}`, '<div class="verify-loading"><div class="verify-spinner"></div><p>Loading vendor data...</p></div>');
+  
+  try {
+    const res = await fetch(`/api/debug/vendor/${encodeURIComponent(vendorId)}`);
+    if (!res.ok) throw new Error(`HTTP ${res.status}`);
+    const data = await res.json();
+    
+    let html = `<div class="verify-result success">`;
+    html += `Vendor: ${data.vendor_id}\n`;
+    html += `Baseline Status: ${data.baseline_status}\n`;
+    html += `Events Status: ${data.events_status}\n\n`;
+    
+    html += `Summary:\n`;
+    html += `  Has Baseline: ${data.summary.has_baseline}\n`;
+    html += `  Total Events: ${data.summary.total_events}\n`;
+    if (data.summary.event_types.length > 0) {
+      html += `  Event Types: ${data.summary.event_types.join(', ')}\n`;
+    }
+    html += `\n`;
+    
+    if (data.baseline) {
+      html += `Baseline Data:\n`;
+      for (const [key, val] of Object.entries(data.baseline)) {
+        html += `  ${key}: ${val || '(empty)'}\n`;
+      }
+      html += `\n`;
+    }
+    
+    if (data.events && data.events.length > 0) {
+      html += `Events (first 3):\n`;
+      for (let i = 0; i < Math.min(3, data.events.length); i++) {
+        const ev = data.events[i];
+        html += `  [${i+1}] ${ev.fact_type}\n`;
+        html += `      Date: ${ev.date || '?'}\n`;
+        html += `      Summary: ${ev.summary || '?'}\n`;
+        html += `      Value: ${ev.value || '?'}\n`;
+      }
+      html += `\n`;
+    }
+    
+    html += `Context Block Preview:\n`;
+    html += `${data.context_block_preview}\n`;
+    html += `</div>`;
+    
+    document.getElementById('modal-content').innerHTML = html;
+  } catch(e) {
+    const errorHtml = `<div class="verify-result error">Debug Failed: ${e.message}</div>`;
+    document.getElementById('modal-content').innerHTML = errorHtml;
+  }
+}
+
+/* ════════════════════ INIT ════════════════════ */
+loadOverview();
+loadAlerts();
+
+// Auto-refresh every 30 seconds so the UI stays in sync with Hindsight
+// without needing any manual ingest button in this UI.
+setInterval(() => { loadOverview(); loadAlerts(); }, 30_000);
+
+</script>
+</body>
+</html>

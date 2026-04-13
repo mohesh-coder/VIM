@@ -1,0 +1,69 @@
+INVOICE
+Twilio Inc.
+
+Document Type  : INVOICE
+Vendor         : Twilio Inc.
+Vendor ID      : twilio
+Invoice No.    : TWL-INV-2023-0142
+Invoice Date   : 2023-01-01
+Due Date       : 2023-01-31
+
+-------------------------------------------------------------------
+BILL TO
+-------------------------------------------------------------------
+Acme Technologies Pvt. Ltd.
+Accounts Payable — Ravi Shankar
+12 Rajiv Gandhi Salai, Chennai, Tamil Nadu 600096
+Email: ravi.shankar@acmetech.in
+
+-------------------------------------------------------------------
+BILLING PERIOD
+-------------------------------------------------------------------
+December 1, 2022 through December 31, 2022
+
+-------------------------------------------------------------------
+USAGE SUMMARY
+-------------------------------------------------------------------
+Service                 Units           Rate            Amount
+-------------------------------------------------------------------
+Outbound SMS            1,482,600 SMS   $0.0081/SMS     $12,008.46
+Inbound SMS                42,100 SMS   $0.0000/SMS     $0.00
+Outbound Voice          18,340 min      $0.0130/min     $238.42
+Inbound Voice            9,210 min      $0.0085/min     $78.29
+WhatsApp Conversations   3,850 conv     $0.0050/conv    $19.25
+-------------------------------------------------------------------
+Subtotal                                                $12,344.42
+Platform Fee (monthly)                                    $150.00
+-------------------------------------------------------------------
+TOTAL DUE                                               $12,494.42
+-------------------------------------------------------------------
+
+-------------------------------------------------------------------
+RATE CHANGE NOTICE
+-------------------------------------------------------------------
+Please note that effective December 1, 2022, the per-SMS rate for
+domestic India SMS has been updated to $0.0081 per SMS, reflecting
+current carrier cost adjustments in the India market.
+
+Your account has been updated accordingly.
+
+For questions about this invoice, contact billing@twilio.com or
+reach your account representative Jordan Mills at
+jordan.mills@twilio.com.
+
+-------------------------------------------------------------------
+PAYMENT INSTRUCTIONS
+-------------------------------------------------------------------
+Bank              : Silicon Valley Bank
+Account Name      : Twilio Inc.
+Account Number    : XXXXXXXXX4821
+Routing Number    : 121140399
+Reference         : TWL-INV-2023-0142
+
+-------------------------------------------------------------------
+END OF DOCUMENT
+Vendor ID      : twilio
+Document Type  : invoice
+Document Date  : 2023-01-01
+Source File    : invoice_2023_01.txt
+-------------------------------------------------------------------
